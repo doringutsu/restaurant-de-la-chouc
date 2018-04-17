@@ -110,7 +110,7 @@
             var specific_needs = j("#specific_needs").val();
             var validData = true;
 
-            var namePattern = /^([a-zA-ZàâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]{3,30})j/
+            var namePattern = /^([a-zA-ZàâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]{3,30})$/
             if(! namePattern.test(firstName)) {
                 make_field_invalid("first_name");
                 validData = false;
@@ -125,7 +125,7 @@
             else
                 make_field_valid("last_name");
 
-            phonePattern = /^(0\d{9})j/;
+            phonePattern = /^(0\d{9})$/;
             if(! phonePattern.test(phoneNumber)) {
                 make_field_invalid("phone_number");
                 validData = false;
@@ -133,7 +133,7 @@
             else
                 make_field_valid("phone_number");
 
-            emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})j/i;
+            emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
             if(email.length > 0 && ! emailPattern.test(email)) {
                 make_field_invalid("email");
                 validData = false;
@@ -141,7 +141,7 @@
             else
                 make_field_valid("email");
 
-            datePattern = /^(\d{2}\/\d{2}\/\d{4})j/;
+            datePattern = /^(\d{2}\/\d{2}\/\d{4})$/;
             if(! datePattern.test(date)) {
                 make_field_invalid("date");
                 validData = false;
