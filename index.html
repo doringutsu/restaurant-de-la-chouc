@@ -52,6 +52,7 @@
             j("#hour_helper").hide()
             j("#places_helper").hide();
             j("#success_message").hide();
+            j("#date_warning").hide();
 
             var datePicker = j("#datetimepicker").datepicker({
                 startDate: new Date(),
@@ -71,18 +72,36 @@
 
         });
 
+        function disable_hour_buttons () {
+            buttons = document.getElementsByClassName("morning");
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.add("disabled");
+            }
+        };
+
+        function enable_hour_buttons () {
+            buttons = document.getElementsByClassName("morning");
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove("disabled");
+            }
+        }
         function dateChanged(ev) {
             var date = j("#datetimepicker").datepicker('getDate');
-            if(date.getDay() == 0 || date.getDay() == 6) {
-                buttons = document.getElementsByClassName("morning");
-                for (var i = 0; i < buttons.length; i++) {
-                    buttons[i].classList.add("disabled");
+            var today = new Date();
+            date.setHours(0, 0, 0);
+            today.setHours(0, 0, 0);
+
+            if(date.getDay() == 0 || date.getDay() == 6 || date.toDateString() == today.toDateString()) {
+                disable_hour_buttons();
+                className = j("#date_div").attr("class");
+                if (! className.includes("has-warning")){
+                    j("#date_div").addClass("has-warning");
+                    j("#date_warning").show();
                 }
             } else {
-                buttons = document.getElementsByClassName("morning");
-                for (var i = 0; i < buttons.length; i++) {
-                    buttons[i].classList.remove("disabled");
-                }
+                enable_hour_buttons();
+                j("#date_div").removeClass("has-warning");
+                j("#date_warning").hide();
             }
         }
 
@@ -110,7 +129,7 @@
             var specific_needs = j("#specific_needs").val();
             var validData = true;
 
-            var namePattern = /^([a-zA-ZàâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]{3,30})$/
+            var namePattern = /^([a-zA-ZàâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ\- ,.]{3,30})$/
             if(! namePattern.test(firstName)) {
                 make_field_invalid("first_name");
                 validData = false;
@@ -214,6 +233,9 @@
                       console.log("succes: " + data);
                     }
                 });
+
+                j("#date_div").removeClass("has-warning");
+                j("#date_warning").hide();
                 j("#success_message").show();
 
                 document.getElementById("first_name").value = "";
@@ -290,6 +312,7 @@
                 </span>
             </div>
             <span class="help-block" id="date_helper">Vous devez choisir une date</span>
+            <span class="help-block" id="date_warning">Les réservations pour la date d'aujourd'hui, les samedis et les dimanches sont possibles seulement après 18h</span>
         </div>
     </div>
 
